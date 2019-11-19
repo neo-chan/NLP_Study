@@ -1,4 +1,14 @@
-# coding=utf-8
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@File    :   __init__.py
+@Contact :   cxbwater@163.com
+@Modify Time      @Author    @Version    @Desciption
+------------      -------    --------    -----------
+2019/11/18 下午8:50   cxb      1.0         None
+'''
+
+# import lib
 import pandas as pd
 import numpy as np
 from multiprocessing import cpu_count,Pool
