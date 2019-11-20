@@ -30,5 +30,6 @@ train_seg_path=os.path.join(root,_data_source, 'train_seg_data.csv')
 test_seg_path=os.path.join(root,_data_source, 'test_seg_data.csv')
 #合并训练集和测试集的数据
 merged_seg_path=os.path.join(root,_data_source,'merged_train_test_seg_data.csv')
-
+#训练模型的路径
+word2vec_model_path=os.path.join(root,_data_source,'word2vec.model')
 
