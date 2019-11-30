@@ -30,6 +30,22 @@ train_seg_path=os.path.join(root,_data_source, 'train_seg_data.csv')
 test_seg_path=os.path.join(root,_data_source, 'test_seg_data.csv')
 #合并训练集和测试集的数据
 merged_seg_path=os.path.join(root,_data_source,'merged_train_test_seg_data.csv')
-#训练模型的路径
+#word2vec训练模型的路径
 word2vec_model_path=os.path.join(root,_data_source,'word2vec.model')
+#fasttext训练模型的路径
+fasttext_model_path=os.path.join(root,_data_source,'fasttext.model')
+#词向量维度
+embedding_dim=200
+#embedding_matrix保存路径
+embedding_matrix_path=os.path.join(root,_data_source,'embedding_matrix.txt')
+# 词向量训练轮数
+wv_train_epochs = 1
+# 数据标签分离
+train_x_seg_path = os.path.join(root, _data_source, 'train_X_seg_data.csv')
+train_y_seg_path = os.path.join(root, _data_source, 'train_Y_seg_data.csv')
+test_x_seg_path = os.path.join(root, _data_source, 'test_X_seg_data.csv')
 
+# pad oov处理后的数据
+train_x_pad_path = os.path.join(root, _data_source, 'train_X_pad_data.csv')
+train_y_pad_path = os.path.join(root, _data_source, 'train_Y_pad_data.csv')
+test_x_pad_path = os.path.join(root, _data_source, 'test_X_pad_data.csv')
