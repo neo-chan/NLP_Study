@@ -27,17 +27,20 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 
 jieba.load_userdict(user_dict)
 
-def load_dataset(train_data_path,test_data_path):
+def load_dataset():
     '''
     数据数据集
     :param train_data_path:训练集路径
     :param test_data_path: 测试集路径
     :return:
     '''
-    # 读取数据集
-    train_data=pd.read_csv(train_data_path)
-    test_data=pd.read_csv(test_data_path)
-    return train_data,test_data
+    # 读取数据集,将csv文件的第一列命名
+    train_X=pd.read_csv(train_x_pad_path,header=None).rename(columns={0: 'X'})
+    train_Y=pd.read_csv(train_y_pad_path,header=None).rename(coiumns={0: 'Y'})
+    test_X=pd.read_csv(test_x_pad_path,header=None).rename(columns={0: 'X'})
+    # 获取保存的词向量模型
+    wv_moodel=Word2Vec.load(word2vec_model_path)
+    return train_X['X'],train_Y['Y'],test_X['X'],wv_moodel
 
 def clean_sentence(sentence):
     '''
@@ -136,7 +139,8 @@ def data_generate(train_data_path,test_data_path):
     :return: 训练数据，测试数据，合并的数据
     '''
     # 1.加载数据
-    train_df,test_df=load_dataset(train_data_path,test_data_path)
+    train_df=pd.read_csv(train_data_path)
+    test_df=pd.read_csv(test_data_path)
     print('train data size {},test data size {}'.format(len(train_df), len(test_df)))
     # 2.空值处理,删除subset中的列字段为空的行
     train_df.dropna(subset=['Question', 'Dialogue','Report'], how='any',inplace=True)
