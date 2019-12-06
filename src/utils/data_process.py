@@ -118,7 +118,7 @@ def pad_process(sentence, max_len, vocab):
     # 3. 填充< start > < end >
     sentence = ['<START>'] + sentence + ['<END>']
     # 4. 判断长度，填充　< pad >
-    sentence = sentence + ['<PAD>'] * (max_len + 2 - len(words))
+    sentence = sentence + ['<PAD>'] * (max_len - len(words))
     return ' '.join(sentence)
 
 def get_max_len(data):
@@ -127,7 +127,7 @@ def get_max_len(data):
     :param data: 待统计的数据  train_df['Question']
     :return: 最大长度值
     '''
-    max_lens = data.apply(lambda x: x.count(' '))
+    max_lens = data.apply(lambda x: x.count(' ')+1)
     return int(np.mean(max_lens) + 2 * np.std(max_lens))
 
 
