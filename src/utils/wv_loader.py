@@ -17,7 +17,18 @@ import logging
 from src.utils.file_path import embedding_matrix_path
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-def build_pad_vocab(vocab):
+def get_vocab_from_model(wv_model_path):
+    '''
+    从保存的词向量模型中获取字典
+    :param vocab:
+    :return: word_index,index_word
+    '''
+    wv_model=Word2Vec.load(wv_model_path)
+    vocab={word: index for index, word in enumerate(wv_model.wv.index2word)}
+    reverse_vocab={index: word for index,word in enumerate(wv_model.wv.index2word)}
+    return vocab,reverse_vocab
+
+def get_pad_vocab(vocab):
     '''
     加入< START > < END > < PAD > < UNK >后的词典
     :param vocab:
@@ -67,3 +78,10 @@ def get_embedding_matrix(save_wv_model_path):
     wv_model=Word2Vec(save_wv_model_path)
     embedding_matrix=wv_model.wv.vectors
     return embedding_matrix
+
+
+def load_embedding_matrix():
+    """
+    加载 embedding_matrix_path
+    """
+    return np.load(embedding_matrix_path + '.npy')

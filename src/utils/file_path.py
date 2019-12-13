@@ -34,12 +34,8 @@ merged_seg_path=os.path.join(root,_data_source,'merged_train_test_seg_data.csv')
 word2vec_model_path=os.path.join(root,_data_source,'word2vec.model')
 #fasttext训练模型的路径
 fasttext_model_path=os.path.join(root,_data_source,'fasttext.model')
-#词向量维度
-embedding_dim=200
 #embedding_matrix保存路径
-embedding_matrix_path=os.path.join(root,_data_source,'embedding_matrix.txt')
-# 词向量训练轮数
-wv_train_epochs = 1
+embedding_matrix_path=os.path.join(root,_data_source,'embedding_matrix')
 # 数据标签分离
 train_x_seg_path = os.path.join(root, _data_source, 'train_X_seg_data.csv')
 train_y_seg_path = os.path.join(root, _data_source, 'train_Y_seg_data.csv')
@@ -49,3 +45,25 @@ test_x_seg_path = os.path.join(root, _data_source, 'test_X_seg_data.csv')
 train_x_pad_path = os.path.join(root, _data_source, 'train_X_pad_data.csv')
 train_y_pad_path = os.path.join(root, _data_source, 'train_Y_pad_data.csv')
 test_x_pad_path = os.path.join(root, _data_source, 'test_X_pad_data.csv')
+
+# numpy 转换后的数据
+train_x_path = os.path.join(root, _data_source, 'train_X')
+train_y_path = os.path.join(root, _data_source, 'train_Y')
+test_x_path = os.path.join(root, _data_source, 'test_X')
+
+# 词典路径
+vocab_path = os.path.join(root, _data_source, 'vocab.txt')
+reverse_vocab_path = os.path.join(root, _data_source, 'reverse_vocab.txt')
+
+# 模型保存文件夹
+checkpoint_dir = os.path.join(root, _data_source, 'checkpoints', 'training_checkpoints_mask_loss_dim500_seq')
+
+checkpoint_prefix = os.path.join(checkpoint_dir, 'ckpt')
+
+# 结果保存文件夹
+save_result_dir = os.path.join(root, 'results')
+
+# 词向量训练轮数
+wv_train_epochs = 1
+#词向量维度
+embedding_dim=300
