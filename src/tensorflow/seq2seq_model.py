@@ -3,9 +3,9 @@
 import tensorflow as tf
 
 from src.tensorflow.model_layers import Encoder, BahdanauAttention, Decoder
-from src.utils.file_path import word2vec_model_path
+from src.utils.params_utils import get_params
 from src.utils.gpu_utils import config_gpu
-from src.utils.wv_loader import load_embedding_matrix, get_vocab_from_model
+from src.utils.wv_loader import load_embedding_matrix, Vocab
 
 
 class Seq2Seq(tf.keras.Model):
@@ -66,10 +66,12 @@ class Seq2Seq(tf.keras.Model):
 if __name__ == '__main__':
     # GPU资源配置
     config_gpu()
+    # 获得参数
+    params = get_params()
     # 读取vocab训练
-    vocab, reverse_vocab = get_vocab_from_model(word2vec_model_path)
+    vocab = Vocab(params["vocab_path"], params["vocab_size"])
     # 计算vocab size
-    vocab_size = len(vocab)
+    vocab_size = vocab.count
     batch_size = 128
     input_sequence_len = 200
 

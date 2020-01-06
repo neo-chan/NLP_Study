@@ -2,7 +2,7 @@
 import tensorflow as tf
 from src.tensorflow.batcher import train_batch_generator
 from src.tensorflow.seq2seq_model import Seq2Seq
-from src.utils.file_path import word2vec_model_path
+from src.utils.config import save_wv_model_path
 from src.utils.gpu_utils import config_gpu
 import time
 
@@ -11,21 +11,18 @@ def train_model(model, vocab, params, checkpoint_manager):
     epochs = params['epochs']
     batch_size = params['batch_size']
 
-    pad_index = vocab['<PAD>']
-    nuk_index = vocab['<UNK>']
-    start_index = vocab['<START>']
+    pad_index = vocab.word2id[vocab.PAD_TOKEN]
+    start_index = vocab.word2id[vocab.START_DECODING]
 
     # 计算vocab size
-    params['vocab_size'] = len(vocab)
+    params['vocab_size'] = vocab.count
 
     optimizer = tf.keras.optimizers.Adam(name='Adam', learning_rate=0.001)
     loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction='none')
 
     # 定义损失函数
     def loss_function(real, pred):
-        pad_mask = tf.math.equal(real, pad_index)
-        nuk_mask = tf.math.equal(real, nuk_index)
-        mask = tf.math.logical_not(tf.math.logical_or(pad_mask, nuk_mask))
+        mask = tf.math.logical_not(tf.math.equal(real, pad_index))
         loss_ = loss_object(real, pred)
         mask = tf.cast(mask, dtype=loss_.dtype)
         loss_ *= mask
@@ -72,7 +69,7 @@ def train_model(model, vocab, params, checkpoint_manager):
                                                              batch,
                                                              batch_loss.numpy()))
         # saving (checkpoint) the model every 2 epochs
-        if (epoch + 1) % 2 == 0:
+        if (epoch + 1) % 1 == 0:
             ckpt_save_path = checkpoint_manager.save()
             print('Saving checkpoint for epoch {} at {}'.format(epoch + 1,
                                                                 ckpt_save_path))

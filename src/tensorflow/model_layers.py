@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from src.utils.gpu_utils import config_gpu
-from src.utils.wv_loader import get_vocab_from_model, get_embedding_matrix
-from src.utils.file_path import word2vec_model_path
+from src.utils.config import save_wv_model_path
+from src.utils.params_utils import get_params
+from src.utils.wv_loader import load_word2vec_file, Vocab
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import GRU, Input, Dense, TimeDistributed, Activation, RepeatVector, Bidirectional
 from tensorflow.keras.layers import Embedding
@@ -13,6 +14,15 @@ import tensorflow as tf
 
 class Encoder(tf.keras.Model):
     def __init__(self, vocab_size, embedding_dim, embedding_matrix, enc_units, batch_sz):
+        """
+        Encoder初始化，实例化时调用
+        Args:
+            vocab_size: 词典大小
+            embedding_dim: 词向量长度
+            embedding_matrix: 词向量
+            enc_units: hidden层单元数
+            batch_sz: batch大小
+        """
         super(Encoder, self).__init__()
         self.batch_sz = batch_sz
         self.enc_units = enc_units
@@ -24,16 +34,34 @@ class Encoder(tf.keras.Model):
                                        recurrent_initializer='glorot_uniform')
 
     def call(self, x, hidden):
+        """
+        调用实例化后的encoder()
+        Args:
+            x: 输入词向量的索引
+            hidden: 处理单元，此时为gru单元
+        Returns:gru的输出
+        """
+        # 转化为词向量
         x = self.embedding(x)
+        # 调用gru单元处理
         output, state = self.gru(x, initial_state=hidden)
         return output, state
 
     def initialize_hidden_state(self):
+        """
+        初始化所有的处理单元的参数
+        Returns:
+        """
         return tf.zeros((self.batch_sz, self.enc_units))
 
 
 class BahdanauAttention(tf.keras.layers.Layer):
     def __init__(self, units):
+        """
+        attention函数初始化
+        Args:
+            units:
+        """
         super(BahdanauAttention, self).__init__()
         self.W1 = tf.keras.layers.Dense(units)
         self.W2 = tf.keras.layers.Dense(units)
@@ -106,12 +134,14 @@ class Decoder(tf.keras.Model):
 if __name__ == '__main__':
     # GPU资源配置
     config_gpu()
+    # 获得参数
+    params = get_params()
     # 读取vocab训练
-    vocab, reverse_vocab = get_vocab_from_model(word2vec_model_path)
+    vocab = Vocab(params["vocab_path"], params["vocab_size"])
     # 计算vocab size
     vocab_size = len(vocab)
     # 使用GenSim训练好的embedding matrix
-    embedding_matrix = get_embedding_matrix(word2vec_model_path)
+    embedding_matrix = load_word2vec_file(save_wv_model_path)
 
     input_sequence_len = 250
     BATCH_SIZE = 64

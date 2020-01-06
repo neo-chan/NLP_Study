@@ -16,6 +16,7 @@ import pathlib
 root=pathlib.Path(os.path.abspath(__file__)).parent.parent.parent
 _data_source='datasource'
 _stop_words='stopwords'
+_results_dir="results"
 #训练数据路径
 train_data_path=os.path.join(root,_data_source,'AutoMaster_TrainSet.csv')
 #测试数据路径
@@ -31,7 +32,7 @@ test_seg_path=os.path.join(root,_data_source, 'test_seg_data.csv')
 #合并训练集和测试集的数据
 merged_seg_path=os.path.join(root,_data_source,'merged_train_test_seg_data.csv')
 #word2vec训练模型的路径
-word2vec_model_path=os.path.join(root,_data_source,'word2vec.model')
+save_wv_model_path=os.path.join(root,_data_source,'word2vec.model')
 #fasttext训练模型的路径
 fasttext_model_path=os.path.join(root,_data_source,'fasttext.model')
 #embedding_matrix保存路径
@@ -61,9 +62,18 @@ checkpoint_dir = os.path.join(root, _data_source, 'checkpoints', 'training_check
 checkpoint_prefix = os.path.join(checkpoint_dir, 'ckpt')
 
 # 结果保存文件夹
-save_result_dir = os.path.join(root, 'results')
+save_result_dir = os.path.join(root, _results_dir)
 
 # 词向量训练轮数
 wv_train_epochs = 1
 #词向量维度
 embedding_dim=300
+
+sample_total = 82871
+
+batch_size = 3
+
+
+epochs = 5
+
+vocab_size = 32201

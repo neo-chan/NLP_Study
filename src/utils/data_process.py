@@ -17,9 +17,9 @@ import jieba.posseg as pseg
 import sys
 
 sys.path.append(r"..")
-from src.utils.file_path import test_data_path, train_data_path, stop_word_path, user_dict
-from src.utils.file_path import test_seg_path, train_seg_path, merged_seg_path, wv_train_epochs, train_x_seg_path, \
-    train_y_seg_path, test_x_seg_path, train_x_pad_path, train_y_pad_path, test_x_pad_path, word2vec_model_path, \
+from src.utils.config import test_data_path, train_data_path, stop_word_path, user_dict
+from src.utils.config import test_seg_path, train_seg_path, merged_seg_path, wv_train_epochs, train_x_seg_path, \
+    train_y_seg_path, test_x_seg_path, train_x_pad_path, train_y_pad_path, test_x_pad_path, save_wv_model_path, \
     vocab_path, reverse_vocab_path, train_x_path, train_y_path, test_x_path, embedding_matrix_path,embedding_dim
 from src.utils.multiprocessing_utils import parallelize
 from gensim.models.word2vec import LineSentence, Word2Vec
@@ -36,9 +36,9 @@ def load_dataset():
     数据数据集
     :return:
     '''
-    train_X = np.loadtxt(train_x_path)
-    train_Y = np.loadtxt(train_y_path)
-    test_X = np.loadtxt(test_x_path)
+    train_X = np.load(train_x_path+'.npy')
+    train_Y = np.load(train_y_path+'.npy')
+    test_X = np.load(test_x_path+'.npy')
     train_X.dtype='float32'
     train_Y.dtype = 'float32'
     test_X.dtype = 'float32'
@@ -73,7 +73,7 @@ def clean_sentence(sentence):
     :return: 过滤特殊字符后的字符串
     '''
     if isinstance(sentence, str):
-        return re.sub(r'[\s+\-\|\!\/\[\]\{\}_,.$%^*(+\"\')]+|[:：+——()?【】“”！，。？、~@#￥%……&*（）]+|车主说|技师说|语音|图片|你好|您好',
+        return re.sub(r'[\s+\-\|\!\/\[\]\{\}_,.$%^*(+\"\')]+|[:：+——()?【】“”、~@#￥%……&*（）]+|车主说|技师说|语音|图片|你好|您好',
                       '', sentence)
     else:
         return ''
@@ -234,7 +234,7 @@ def data_generate(train_data_path, test_data_path):
     wv_model.train(LineSentence(test_x_pad_path), epochs=wv_train_epochs, total_examples=wv_model.corpus_count)
 
     # 保存词向量模型
-    wv_model.save(word2vec_model_path)
+    wv_model.save(save_wv_model_path)
     print('finish retrain w2v model')
     print('final w2v_model has vocabulary of ', len(wv_model.wv.vocab))
 
