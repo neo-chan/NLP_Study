@@ -41,7 +41,8 @@ embedding_matrix_path=os.path.join(root,_data_source,'embedding_matrix')
 train_x_seg_path = os.path.join(root, _data_source, 'train_X_seg_data.csv')
 train_y_seg_path = os.path.join(root, _data_source, 'train_Y_seg_data.csv')
 test_x_seg_path = os.path.join(root, _data_source, 'test_X_seg_data.csv')
-
+val_x_seg_path = os.path.join(root, _data_source, 'val_X_seg_data.csv')
+val_y_seg_path = os.path.join(root, _data_source, 'val_Y_seg_data.csv')
 # pad oov处理后的数据
 train_x_pad_path = os.path.join(root, _data_source, 'train_X_pad_data.csv')
 train_y_pad_path = os.path.join(root, _data_source, 'train_Y_pad_data.csv')

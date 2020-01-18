@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
-# Created by LuoJie at 11/29/19
 import tensorflow as tf
-from src.tensorflow.seq2seq_model import Seq2Seq
-from src.tensorflow.train_helper import train_model
+from src.tensorflow_seq2seq.seq2seq_model import Seq2Seq
+from src.tensorflow_seq2seq.train_helper import train_model
 from src.utils.gpu_utils import config_gpu
 from src.utils.params_utils import get_params
 from src.utils.wv_loader import Vocab

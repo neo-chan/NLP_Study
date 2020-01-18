@@ -21,9 +21,10 @@ from src.utils.config import test_data_path, train_data_path, stop_word_path, us
 from src.utils.config import test_seg_path, train_seg_path, merged_seg_path, wv_train_epochs, train_x_seg_path, \
     train_y_seg_path, test_x_seg_path, train_x_pad_path, train_y_pad_path, test_x_pad_path, save_wv_model_path, \
     vocab_path, reverse_vocab_path, train_x_path, train_y_path, test_x_path, embedding_matrix_path,embedding_dim
+from src.utils.config import *
 from src.utils.multiprocessing_utils import parallelize
 from gensim.models.word2vec import LineSentence, Word2Vec
-
+from sklearn.model_selection import train_test_split
 import logging
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -196,6 +197,18 @@ def data_generate(train_data_path, test_data_path):
     # 8. 分离数据和标签
     train_df['X'] = train_df[['Question', 'Dialogue']].apply(lambda x: ' '.join(x), axis=1)
     test_df['X'] = test_df[['Question', 'Dialogue']].apply(lambda x: ' '.join(x), axis=1)
+
+    # 训练集 验证集划分
+    X_train, X_val, y_train, y_val = train_test_split(train_df['X'], train_df['Report'],
+                                                      test_size=0.002,  # 8W*0.002
+                                                      )
+
+    X_train.to_csv(train_x_seg_path, index=None, header=False)
+    y_train.to_csv(train_y_seg_path, index=None, header=False)
+    X_val.to_csv(val_x_seg_path, index=None, header=False)
+    y_val.to_csv(val_y_seg_path, index=None, header=False)
+
+    test_df['X'].to_csv(test_x_seg_path, index=None, header=False)
 
     # 9. 填充开始结束符号,未知词填充 oov, 长度填充
     # 使用GenSim训练得出的vocab

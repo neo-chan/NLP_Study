@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-# Created by LuoJie at 11/27/19
 import os
 
 from src.utils.config import save_result_dir

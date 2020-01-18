@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-# Created by LuoJie at 12/5/19
 import tensorflow as tf
 import os
 

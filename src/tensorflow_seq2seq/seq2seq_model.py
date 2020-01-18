@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
-# Created by LuoJie at 12/7/19
 import tensorflow as tf
 
-from src.tensorflow.model_layers import Encoder, BahdanauAttention, Decoder
+from src.tensorflow_seq2seq.model_layers import Encoder, BahdanauAttention, Decoder
 from src.utils.params_utils import get_params
 from src.utils.gpu_utils import config_gpu
 from src.utils.wv_loader import load_embedding_matrix, Vocab

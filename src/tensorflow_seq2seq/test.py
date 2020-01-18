@@ -1,19 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@File    :   test.py    
-@Contact :   cxbwater@163.com
-@Modify Time      @Author    @Version    @Desciption
-------------      -------    --------    -----------
-2019/12/14 下午4:31   cxb      1.0         None
-'''
-
 # import lib
-from src.tensorflow.test_helper import beam_decode
+from src.tensorflow_seq2seq.test_helper import beam_decode
 import tensorflow as tf
-from src.tensorflow.batcher import beam_test_batch_generator
-from src.tensorflow.seq2seq_model import Seq2Seq
-from src.tensorflow.test_helper import beam_decode, greedy_decode
+from src.tensorflow_seq2seq.batcher import beam_test_batch_generator
+from src.tensorflow_seq2seq.seq2seq_model import Seq2Seq
+from src.tensorflow_seq2seq.test_helper import beam_decode, greedy_decode
 from src.utils.config import checkpoint_dir, test_data_path
 from src.utils.data_process import load_test_dataset
 from src.utils.gpu_utils import config_gpu
@@ -35,9 +27,9 @@ def test(params):
     vocab = Vocab(params["vocab_path"], params["vocab_size"])
 
     print("Creating the checkpoint manager")
-    print("Creating the checkpoint manager")
     checkpoint = tf.train.Checkpoint(Seq2Seq=model)
     checkpoint_manager = tf.train.CheckpointManager(checkpoint, checkpoint_dir, max_to_keep=5)
+    #获取最后一次保存的模型
     checkpoint.restore(checkpoint_manager.latest_checkpoint)
     if checkpoint_manager.latest_checkpoint:
         print("Restored from {}".format(checkpoint_manager.latest_checkpoint))
@@ -46,8 +38,10 @@ def test(params):
     print("Model restored")
 
     if params['greedy_decode']:
+        # 贪心算法预测
         predict_result(model, params, vocab, params['result_save_path'])
     else:
+        #beam search预测
         b = beam_test_batch_generator(params["beam_size"])
         results = []
         for batch in b:

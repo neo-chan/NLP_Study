@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-# Created by LuoJie at 12/8/19
 import tensorflow as tf
 import numpy as np
 import math
